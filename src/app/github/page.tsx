@@ -32,7 +32,7 @@ async function getGithubData() {
   const token = process.env.GITHUB_ACCESS_TOKEN
   if (!username) throw new Error('GITHUB_USERNAME 환경변수가 필요합니다.')
 
-  const headers: HeadersInit = token ? { Authorization: `token ${token}` } : {}
+  const headers: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {}
 
   const [userRes, reposRes] = await Promise.all([
     fetch(`https://api.github.com/users/${username}`, {
