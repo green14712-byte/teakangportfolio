@@ -7,9 +7,9 @@ import {
   SignedOut,
   UserButton,
   SignInButton,
-  SignOutButton, // ✅ 추가
+  SignOutButton,
 } from '@clerk/nextjs'
-import { Geist, Geist_Mono } from 'next/font/google' // Margarine 제거
+import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
@@ -45,6 +45,7 @@ export default function RootLayout({
               borderRight: '2px solid #bae6fd',
             }}
           >
+            {/* 상단 로고 / 홈 링크 */}
             <Link
               href="/"
               style={{
@@ -58,37 +59,49 @@ export default function RootLayout({
               📁 Portfolio
             </Link>
 
+            {/* 사이드 메뉴 목록 */}
             <ul style={{ listStyle: 'none', padding: 0, lineHeight: '2' }}>
+              {/* 항상 보이는 메뉴: 소개 */}
               <li style={{ marginBottom: '10px' }}>
-                <a
+                <Link
                   href="/about"
                   style={{ color: '#0f172a', textDecoration: 'none' }}
                 >
                   유태강
-                </a>
+                </Link>
               </li>
 
-              {/* ✅ 로그인 시 접근 가능한 메뉴 */}
+              {/* ✅ 로그인 시 접근 가능한 메뉴들 */}
               <SignedIn>
                 <li style={{ marginBottom: '10px' }}>
-                  <a
+                  <Link
                     href="/github"
                     style={{ color: '#0f172a', textDecoration: 'none' }}
                   >
                     GitHub
-                  </a>
+                  </Link>
                 </li>
+
+                <li style={{ marginBottom: '10px' }}>
+                  <Link
+                    href="/practice"
+                    style={{ color: '#0f172a', textDecoration: 'none' }}
+                  >
+                    실습물
+                  </Link>
+                </li>
+
                 <li>
-                  <a
+                  <Link
                     href="/clerk-app"
                     style={{ color: '#0f172a', textDecoration: 'none' }}
                   >
                     Clerk App
-                  </a>
+                  </Link>
                 </li>
               </SignedIn>
 
-              {/* ❌ 비로그인 시 클릭 → 로그인 모달 자동 실행 */}
+              {/* ❌ 비로그인 시: 클릭하면 로그인 모달 띄우기 */}
               <SignedOut>
                 <li style={{ marginBottom: '10px' }}>
                   <SignInButton mode="modal">
@@ -106,6 +119,24 @@ export default function RootLayout({
                     </button>
                   </SignInButton>
                 </li>
+
+                <li style={{ marginBottom: '10px' }}>
+                  <SignInButton mode="modal">
+                    <button
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: '#64748b',
+                        cursor: 'pointer',
+                        padding: 0,
+                        textAlign: 'left',
+                      }}
+                    >
+                      🔒 실습물 (로그인 필요)
+                    </button>
+                  </SignInButton>
+                </li>
+
                 <li>
                   <SignInButton mode="modal">
                     <button
@@ -125,6 +156,7 @@ export default function RootLayout({
               </SignedOut>
             </ul>
 
+            {/* 하단 로그인 / 로그아웃 영역 */}
             <div
               style={{
                 marginTop: '40px',
@@ -150,9 +182,8 @@ export default function RootLayout({
               </SignedOut>
 
               <SignedIn>
-                {/* 프로필 메뉴 + 타입 안전한 로그아웃 버튼 */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <UserButton /> {/* afterSignOutUrl 제거 */}
+                  <UserButton />
                   <SignOutButton redirectUrl="/">
                     <button
                       style={{

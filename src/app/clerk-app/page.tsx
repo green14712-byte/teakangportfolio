@@ -1,64 +1,58 @@
 // src/app/clerk-app/page.tsx
 'use client'
 
-import PageShell from '@/components/PageShell'
-import { UserButton, useUser, SignOutButton } from '@clerk/nextjs'
+import Link from 'next/link'
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 
 export default function ClerkAppPage() {
-  const { user } = useUser()
-
   return (
-    <PageShell title="Clerk- app 예제실습">
-      <div style={{ textAlign: 'center', marginTop: '20px' }}>
-        {user ? (
-          <>
-            <p style={{ marginTop: '10px' }}>
-              안녕하세요, <strong>{user.firstName ?? user.username}</strong>님
-              👋
-            </p>
+    <div style={{ maxWidth: 960, padding: 24 }}>
+      <h1 style={{ fontSize: 22, fontWeight: 700, marginBottom: 16 }}>
+        Clerk App 실습 소개
+      </h1>
 
-            {/* 프로필 버튼 (afterSignOutUrl 제거) + 타입 안전한 로그아웃 버튼 */}
-            <div
+      <p style={{ marginBottom: 16 }}>
+        이 페이지는 Clerk 인증 실습용 예제 서비스로 이동하는 링크를 모아둔
+        곳입니다.
+      </p>
+
+      <ul style={{ listStyle: 'disc', paddingLeft: 20, lineHeight: 1.8 }}>
+        <li>
+          <Link
+            href="https://clerk-app-beige.vercel.app/"
+            target="_blank"
+            style={{ color: '#2563eb' }}
+          >
+            Clerk-App 데모 바로가기
+          </Link>
+        </li>
+      </ul>
+
+      <div style={{ marginTop: 24 }}>
+        <SignedOut>
+          <SignInButton mode="modal">
+            <button
               style={{
-                display: 'flex',
-                gap: 10,
-                justifyContent: 'center',
-                marginTop: 8,
+                background: '#0f172a',
+                color: '#fff',
+                padding: '8px 14px',
+                borderRadius: 6,
+                border: 'none',
+                cursor: 'pointer',
               }}
             >
-              <UserButton />
-            </div>
+              로그인 후 이용하기
+            </button>
+          </SignInButton>
+        </SignedOut>
 
-            <div style={{ marginTop: '40px' }}>
-              <a
-                href="https://clerk-app-beige.vercel.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-block',
-                  background: '#e2e8f0',
-                  color: '#1e293b',
-                  padding: '10px 20px',
-                  borderRadius: '8px',
-                  fontWeight: '600',
-                  textDecoration: 'none',
-                  transition: 'all 0.2s ease',
-                }}
-                onMouseOver={(e) =>
-                  (e.currentTarget.style.background = '#cbd5e1')
-                }
-                onMouseOut={(e) =>
-                  (e.currentTarget.style.background = '#e2e8f0')
-                }
-              >
-                🌐 clerk-app-beige.vercel.app 바로가기
-              </a>
-            </div>
-          </>
-        ) : (
-          <p style={{ color: 'gray' }}>로그인 후 이용 가능합니다.</p>
-        )}
+        <SignedIn>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <UserButton />
+            <span>현재 계정으로 이용 중입니다.</span>
+          </div>
+        </SignedIn>
       </div>
-    </PageShell>
+    </div>
   )
 }
